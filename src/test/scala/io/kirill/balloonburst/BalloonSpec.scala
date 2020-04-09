@@ -10,7 +10,7 @@ class BalloonSpec extends AnyWordSpec with Matchers {
     "return option with a balloon when it has enough inflates left" in {
       val balloon = Balloon(5, 0)
 
-      balloon.inflate() must be (Some(Balloon(4, 1)))
+      balloon.inflate() must be (Some(Balloon(5, 1)))
     }
 
     "return empty option when it has no inflates left" in {
