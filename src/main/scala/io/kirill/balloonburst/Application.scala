@@ -12,6 +12,9 @@ object Application extends App {
     else
       Command.fromString(scala.io.StdIn.readLine).flatMap { command =>
         val (updateBalloons, updatedScore) = Command.run(command, currentBalloons, currentScore)
+        if (command == Command.Inflate && updateBalloons.size != currentBalloons.size) {
+          println("BURST")
+        }
         readCommands(updateBalloons, updatedScore)
       }
   }

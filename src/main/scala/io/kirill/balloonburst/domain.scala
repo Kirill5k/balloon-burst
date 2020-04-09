@@ -41,7 +41,6 @@ object Command {
         case Some(balloon) =>
           (balloon +: balloons.tail, score)
         case None =>
-          println("BURST")
           (balloons.tail, score)
       }
   }
