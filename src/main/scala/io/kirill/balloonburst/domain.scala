@@ -2,11 +2,11 @@ package io.kirill.balloonburst
 
 import scala.util.{Failure, Success, Try}
 
-final case class Balloon(inflates: Int) {
+final case class Balloon(initialInflates: Int, currentInflates: Int) {
 
   def inflate(): Option[Balloon] = {
-    val remainingInflates = inflates -1
-    if (remainingInflates >= 0) Some(Balloon(remainingInflates)) else None
+    val remainingInflates = initialInflates - currentInflates - 1
+    if (remainingInflates >= 0) Some(Balloon(initialInflates, currentInflates + 1)) else None
   }
 }
 
@@ -15,14 +15,12 @@ object Balloon {
     (for {
       stringsArrays <- Try(inputLine.split(" "))
       numbersArray <- Try(stringsArrays.map(_.toInt))
-      balloons <- if (numbersArray.nonEmpty && numbersArray.forall(_ >= 0)) Success(numbersArray.map(i => Balloon(i)).toList)
+      balloons <- if (numbersArray.nonEmpty && numbersArray.forall(_ >= 0)) Success(numbersArray.map(i => Balloon(i, 0)).toList)
                   else Failure(new IllegalArgumentException("is empty or contains balloons with negative inflates"))
     } yield balloons).toEither.left.map(e => s"invalid input string: ${e.getMessage}")
 }
 
-final case class Score(value: Int) {
-  def increment(): Score = Score(value+1)
-}
+final case class Score(value: Int)
 
 sealed trait Command
 object Command {
@@ -37,7 +35,7 @@ object Command {
 
   def run(command: Command, balloons: Seq[Balloon], score: Score): (Seq[Balloon], Score) = command match {
     case Bank =>
-      (balloons.tail, score.increment())
+      (balloons.tail, Score(score.value + balloons.head.currentInflates))
     case Inflate =>
       balloons.head.inflate() match {
         case Some(balloon) =>

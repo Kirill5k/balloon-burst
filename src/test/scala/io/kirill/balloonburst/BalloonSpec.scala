@@ -8,13 +8,13 @@ class BalloonSpec extends AnyWordSpec with Matchers {
   "A Balloon::inflate" should {
 
     "return option with a balloon when it has enough inflates left" in {
-      val balloon = Balloon(5)
+      val balloon = Balloon(5, 0)
 
-      balloon.inflate() must be (Some(Balloon(4)))
+      balloon.inflate() must be (Some(Balloon(4, 1)))
     }
 
     "return empty option when it has no inflates left" in {
-      val balloon = Balloon(0)
+      val balloon = Balloon(0, 0)
 
       balloon.inflate() must be (None)
     }
@@ -23,7 +23,7 @@ class BalloonSpec extends AnyWordSpec with Matchers {
   "A Balloon::fromString" should {
 
     "return right with a seq of balloons" in {
-      Balloon.fromString("3 4 2") must be (Right(List(Balloon(3), Balloon(4), Balloon(2))))
+      Balloon.fromString("3 4 2") must be (Right(List(Balloon(3, 0), Balloon(4, 0), Balloon(2, 0))))
     }
 
     "return left when input string contains illegal characters" in {
