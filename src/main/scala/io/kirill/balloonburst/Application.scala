@@ -22,7 +22,7 @@ object Application extends App {
   } yield score
 
   finalScore match {
-    case Right(score) => println(s"SCORE :${score.value}")
+    case Right(score) => println(s"SCORE: ${score.value}")
     case Left(error) => println(s"ERROR: $error")
   }
 }
