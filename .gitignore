@@ -1,0 +1,7 @@
+target
+test-output/
+.sbtopts
+project/.sbt
+project/target/
+test-output/
+.idea
