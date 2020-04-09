@@ -1,7 +1,5 @@
 package io.kirill.balloonburst
 
-import io.kirill.balloonburst.Command.{Bank, Inflate, _}
-
 object Application extends App {
 
   def readBalloons(): Either[String, Seq[Balloon]] = {
@@ -9,15 +7,10 @@ object Application extends App {
     Balloon.fromString(balloonsString)
   }
 
-  def readCommand(): Either[String, Command] = {
-    val commandString = scala.io.StdIn.readLine
-    Command.fromString(commandString)
-  }
-
   def readCommands(currentBalloons: Seq[Balloon], currentScore: Score): Either[String, Score] = {
     if (currentBalloons.isEmpty) Right(currentScore)
     else
-      readCommand().flatMap { command =>
+      Command.fromString(scala.io.StdIn.readLine).flatMap { command =>
         val (updateBalloons, updatedScore) = Command.run(command, currentBalloons, currentScore)
         readCommands(updateBalloons, updatedScore)
       }
