@@ -34,5 +34,18 @@ object Command {
     case "BANK" => Right(Bank)
     case c => Left(s"unexpected command $c")
   }
+
+  def run(command: Command, balloons: Seq[Balloon], score: Score): (Seq[Balloon], Score) = command match {
+    case Bank =>
+      (balloons.tail, score.increment())
+    case Inflate =>
+      balloons.head.inflate() match {
+        case Some(balloon) =>
+          (balloon +: balloons.tail, score)
+        case None =>
+          println("BURST")
+          (balloons.tail, score)
+      }
+  }
 }
 
